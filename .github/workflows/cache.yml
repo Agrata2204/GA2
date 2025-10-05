@@ -1,0 +1,31 @@
+name: CI with Cache
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      # Cache node_modules (or any folder you want to cache)
+      - name: Cache dependencies
+        id: cache-deps
+        uses: actions/cache@v4
+        with:
+          path: node_modules
+          key: cache-484d053
+          restore-keys: |
+            cache-484d053
+
+      - name: prime-cache-484d053
+        run: |
+          if [ -n "${{ steps.cache-deps.outputs.cache-hit }}" ]; then
+            echo "Cache hit!"
+          else
+            echo "Cache miss!"
+          fi
